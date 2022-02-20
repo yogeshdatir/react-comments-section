@@ -1,25 +1,28 @@
 import React, { useState } from "react";
-import { IComment, ICurrentUser, IReply } from "../../../types/commentsTypes";
+import { IComment, IReply, IUser } from "../../../types/commentsTypes";
 import { CommentFormContainer } from "./CommentForm.styled";
 import { v4 as uuidv4 } from "uuid";
+import { useCommentContext } from "../../../contexts/commentContext";
 
 type Props = {
   parentCommentId?: string;
-  currentUser: ICurrentUser;
   parentCommentUser?: string;
   cancelReply?: (commentId: string) => void;
-  addNewComment: (newComment: IComment) => void;
-  addNewReply: (parentCommentId: string, newComment: IReply) => void;
 };
 
 const CommentForm = ({
   parentCommentId,
-  currentUser,
   parentCommentUser,
   cancelReply,
-  addNewComment,
-  addNewReply,
 }: Props) => {
+  const { commentsData, addNewComment, addNewReply } = useCommentContext();
+
+  let currentUser: IUser = {
+    username: "",
+    image: { webp: "", png: "" },
+  };
+  if (commentsData) currentUser = { ...commentsData.currentUser };
+
   const [newComment, setNewComment] = useState<IComment | null>(null);
 
   const handleChange = (e: any) => {

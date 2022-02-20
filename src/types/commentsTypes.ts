@@ -1,11 +1,6 @@
 export interface Response {
-  currentUser: ICurrentUser;
+  currentUser: IUser;
   comments: IComment[];
-}
-
-export interface ICurrentUser {
-  image: IImage;
-  username: string;
 }
 
 export interface IImage {

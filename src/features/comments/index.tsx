@@ -4,21 +4,15 @@ import {
   ReplyContainer,
   ReplyTimeline,
 } from "./Comments.styled";
-import { IComment, IReply, Response } from "../../types/commentsTypes";
+import { IComment, IUser, IReply, Response } from "../../types/commentsTypes";
 import Comment from "./components/Comment";
 import CommentForm from "./components/CommentForm";
 
 type Props = {
-  commentsData: Response;
-  addNewComment: (newComment: IComment) => void;
-  addNewReply: (parentCommentId: string, newComment: IReply) => void;
+  commentsData: Response | null;
 };
 
-const Comments = ({
-  commentsData: { comments, currentUser },
-  addNewComment,
-  addNewReply,
-}: Props) => {
+const Comments = ({ commentsData }: Props) => {
   const [commentsToReply, setCommentsToReply] = useState<string[]>([]);
 
   const addReply = (commentId: string) => {
@@ -38,26 +32,24 @@ const Comments = ({
 
   return (
     <CommentsContainer>
-      {comments.map((comment: IComment) => (
+      {commentsData?.comments.map((comment: IComment) => (
         <Fragment key={comment.id}>
           <Comment comment={comment} addReply={addReply} />
           {commentsToReply.includes(comment.id) && (
             <CommentForm
               parentCommentId={comment.id}
               parentCommentUser={comment.user.username}
-              currentUser={comment.user}
               cancelReply={cancelReply}
-              addNewComment={addNewComment}
-              addNewReply={addNewReply}
             />
           )}
           {!!comment.replies?.length && (
             <ReplyContainer>
               <ReplyTimeline />
               <Comments
-                commentsData={{ comments: comment.replies, currentUser }}
-                addNewComment={addNewComment}
-                addNewReply={addNewReply}
+                commentsData={{
+                  comments: comment.replies,
+                  currentUser: commentsData.currentUser,
+                }}
               />
             </ReplyContainer>
           )}
