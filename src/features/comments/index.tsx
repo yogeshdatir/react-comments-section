@@ -10,9 +10,10 @@ import CommentForm from "./components/CommentForm";
 
 type Props = {
   commentsData: Response | null;
+  parentCommentId?: string | undefined;
 };
 
-const Comments = ({ commentsData }: Props) => {
+const Comments = ({ commentsData, parentCommentId }: Props) => {
   const [commentsToReply, setCommentsToReply] = useState<string[]>([]);
 
   const addReply = (commentId: string) => {
@@ -34,7 +35,11 @@ const Comments = ({ commentsData }: Props) => {
     <CommentsContainer>
       {commentsData?.comments.map((comment: IComment) => (
         <Fragment key={comment.id}>
-          <Comment comment={comment} addReply={addReply} />
+          <Comment
+            comment={comment}
+            addReply={addReply}
+            parentCommentId={parentCommentId}
+          />
           {commentsToReply.includes(comment.id) && (
             <CommentForm
               parentCommentId={comment.id}
@@ -50,6 +55,7 @@ const Comments = ({ commentsData }: Props) => {
                   comments: comment.replies,
                   currentUser: commentsData.currentUser,
                 }}
+                parentCommentId={comment.id}
               />
             </ReplyContainer>
           )}
