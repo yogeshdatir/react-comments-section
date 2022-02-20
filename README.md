@@ -6,6 +6,10 @@
 
 ### `yarn add --dev @emotion/babel-plugin`
 
+### `yarn add uuid`
+
+### `yarn add --dev @types/uuid`
+
 
 ## Getting Started with Create React App
 

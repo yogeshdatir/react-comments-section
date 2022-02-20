@@ -3,24 +3,24 @@ const defaultTheme: DefaultTheme = {
   typography: {
     fontFamily: "Rubik, sans-serif",
     headingLg: {
-      fontSize: 24,
+      fontSize: "24px",
       lineHeight: "normal",
     },
     headingMd: {
-      fontSize: 18,
+      fontSize: "18px",
       lineHeight: "normal",
     },
     body: {
-      fontSize: 16,
-      lineHeight: 24,
+      fontSize: "16px",
+      lineHeight: "24px",
     },
-    fontWeightLight: 400,
-    fontWeightMedium: 500,
-    fontWeightBold: 700,
+    fontWeightLight: "400px",
+    fontWeightMedium: "500px",
+    fontWeightBold: "700px",
   },
   breakpoints: {
-    mobile: 375,
-    desktop: 1440,
+    mobile: "375px",
+    desktop: "1440px",
   },
 };
 export default defaultTheme;

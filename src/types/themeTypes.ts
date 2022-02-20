@@ -8,29 +8,29 @@ export interface Typography {
   headingLg: HeadingLg;
   headingMd: HeadingMd;
   body: Body;
-  fontWeightLight: number;
-  fontWeightMedium: number;
-  fontWeightBold: number;
+  fontWeightLight: string;
+  fontWeightMedium: string;
+  fontWeightBold: string;
 }
 
 export interface HeadingLg {
-  fontSize: number;
+  fontSize: string;
   lineHeight: string;
 }
 
 export interface HeadingMd {
-  fontSize: number;
+  fontSize: string;
   lineHeight: string;
 }
 
 export interface Body {
-  fontSize: number;
-  lineHeight: number;
+  fontSize: string;
+  lineHeight: string;
 }
 
 export interface Breakpoints {
-  mobile: number;
-  desktop: number;
+  mobile: string;
+  desktop: string;
 }
 
 export interface Theme extends DefaultTheme {
