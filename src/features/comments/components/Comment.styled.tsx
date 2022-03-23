@@ -9,6 +9,13 @@ const Container = styled.div`
 
 const CommentScoreSection = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  img {
+    cursor: pointer;
+  }
 `;
 
 const CommentDetailsSection = styled.div`

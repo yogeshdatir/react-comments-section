@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useCommentContext } from "../../../contexts/commentContext";
-import {
-  IComment,
-  IComment_Reply,
-  IReply,
-  IUser,
-} from "../../../types/commentsTypes";
+import { IComment_Reply } from "../../../types/commentsTypes";
+import PlusIcon from "../../../assets/images/icon-plus.svg";
+import MinusIcon from "../../../assets/images/icon-minus.svg";
+
 import {
   CommentContent,
   CommentDetailsSection,
@@ -21,7 +19,8 @@ type Props = {
 };
 
 const Comment = ({ comment, addReply, parentCommentId }: Props) => {
-  const { commentsData, deleteComment, updateComment } = useCommentContext();
+  const { commentsData, deleteComment, updateComment, updateScore } =
+    useCommentContext();
   const [edit, setEdit] = useState<boolean>(false);
   const [commentContent, setCommentContent] = useState<string>(comment.content);
 
@@ -33,9 +32,31 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
     );
   };
 
+  const handleAddScore = (commentId: string) => {
+    updateScore(commentId, "add");
+  };
+
+  const handleSubtractScore = (commentId: string) => {
+    updateScore(commentId, "subtract");
+  };
+
   return (
     <Container>
-      <CommentScoreSection>{comment.score}</CommentScoreSection>
+      <CommentScoreSection>
+        <img
+          src={PlusIcon}
+          style={{ height: "10px", width: "10px" }}
+          alt="add score"
+          onClick={() => handleAddScore(comment.id)}
+        />
+        {comment.score}
+        <img
+          src={MinusIcon}
+          style={{ height: "2.5px", width: "10px" }}
+          alt="subtract score"
+          onClick={() => handleSubtractScore(comment.id)}
+        />
+      </CommentScoreSection>
       <CommentDetailsSection>
         <CommentHeader>
           {comment.user.username}
