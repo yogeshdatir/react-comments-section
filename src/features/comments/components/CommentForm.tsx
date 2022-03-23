@@ -42,6 +42,7 @@ const CommentForm = ({
     if (parentCommentId && parentCommentUser) {
       addNewReply(parentCommentId, {
         ...newComment,
+        content: newComment.content.replace(`@${parentCommentUser} `, ""),
         id: uuidv4(),
         replyingTo: parentCommentUser,
       });
@@ -56,7 +57,14 @@ const CommentForm = ({
     <CommentFormContainer>
       <p>{currentUser.username}</p>
       <div>
-        <textarea value={newComment?.content || ""} onChange={handleChange} />
+        <textarea
+          value={
+            parentCommentId && !newComment
+              ? `@${parentCommentUser} `
+              : newComment?.content || ""
+          }
+          onChange={handleChange}
+        />
         <button onClick={handleSubmit}>
           {parentCommentId ? `reply` : `Send`}
         </button>

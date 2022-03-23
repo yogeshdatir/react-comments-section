@@ -1,6 +1,16 @@
 export interface Response {
   currentUser: IUser;
-  comments: IComment[];
+  comments: IComment_Reply[];
+}
+
+export interface IComment_Reply {
+  id: string;
+  content: string;
+  createdAt: string;
+  score: number;
+  replyingTo?: string;
+  replies?: IReply[];
+  user: IUser;
 }
 
 export interface IImage {

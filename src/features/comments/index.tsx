@@ -4,7 +4,13 @@ import {
   ReplyContainer,
   ReplyTimeline,
 } from "./Comments.styled";
-import { IComment, IUser, IReply, Response } from "../../types/commentsTypes";
+import {
+  IComment,
+  IUser,
+  IReply,
+  Response,
+  IComment_Reply,
+} from "../../types/commentsTypes";
 import Comment from "./components/Comment";
 import CommentForm from "./components/CommentForm";
 
@@ -33,7 +39,7 @@ const Comments = ({ commentsData, parentCommentId }: Props) => {
 
   return (
     <CommentsContainer>
-      {commentsData?.comments.map((comment: IComment) => (
+      {commentsData?.comments.map((comment: IComment_Reply) => (
         <Fragment key={comment.id}>
           <Comment
             comment={comment}
@@ -41,11 +47,14 @@ const Comments = ({ commentsData, parentCommentId }: Props) => {
             parentCommentId={parentCommentId}
           />
           {commentsToReply.includes(comment.id) && (
-            <CommentForm
-              parentCommentId={comment.id}
-              parentCommentUser={comment.user.username}
-              cancelReply={cancelReply}
-            />
+            <ReplyContainer>
+              {comment.replies && <ReplyTimeline />}
+              <CommentForm
+                parentCommentId={comment.id}
+                parentCommentUser={comment.user.username}
+                cancelReply={cancelReply}
+              />
+            </ReplyContainer>
           )}
           {!!comment.replies?.length && (
             <ReplyContainer>

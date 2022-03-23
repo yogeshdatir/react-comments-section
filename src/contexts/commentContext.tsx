@@ -1,5 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
-import { IComment, IReply, Response } from "../types/commentsTypes";
+import {
+  IComment,
+  IComment_Reply,
+  IReply,
+  Response,
+} from "../types/commentsTypes";
 import data from "../assets/data/data.json";
 
 export interface CommentContextInterface {
@@ -8,6 +13,7 @@ export interface CommentContextInterface {
   addNewComment: (newComment: IComment) => void;
   addNewReply: (parentCommentId: string, newComment: IReply) => void;
   deleteComment: (commentId: string, parentCommentId?: string) => void;
+  updateComment: (updatedComment: IComment) => void;
 }
 
 const commentContext = createContext<CommentContextInterface | null>(null);
@@ -59,6 +65,43 @@ export default function CommentContextProvider(props: any) {
     }
   };
 
+  const updateComment = (updatedComment: IComment_Reply) => {
+    let oldCommentIndex:
+      | { parentCommentId: number; replyId?: number | undefined }
+      | undefined;
+
+    commentsData.comments.forEach((comment: IComment_Reply, index: number) => {
+      if (comment.id === updatedComment.id)
+        oldCommentIndex = { parentCommentId: index };
+      else if (comment.replies) {
+        comment.replies.forEach((reply: IReply, replyIndex: number) => {
+          if (reply.id === updatedComment.id)
+            oldCommentIndex = { parentCommentId: index, replyId: replyIndex };
+        });
+      }
+    });
+
+    // ToDo: if we set IComment[] type here, there is type mismatch for reply. Figure out solution.
+    let tempComments: any = [...commentsData.comments];
+
+    if (oldCommentIndex) {
+      if (oldCommentIndex.replyId) {
+        tempComments[oldCommentIndex.parentCommentId]?.replies?.splice(
+          oldCommentIndex.replyId,
+          1,
+          { ...updatedComment }
+        );
+      } else
+        tempComments.splice(oldCommentIndex.parentCommentId, 1, updatedComment);
+    }
+
+    oldCommentIndex &&
+      setCommentsData({
+        ...commentsData,
+        comments: tempComments,
+      });
+  };
+
   const deleteComment = (commentId: string, parentCommentId?: string) => {
     let comments: IComment[] = [...commentsData.comments];
     if (!parentCommentId) {
@@ -94,6 +137,7 @@ export default function CommentContextProvider(props: any) {
     addNewComment,
     addNewReply,
     deleteComment,
+    updateComment,
   };
 
   return (

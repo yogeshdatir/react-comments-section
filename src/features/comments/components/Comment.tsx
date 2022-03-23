@@ -1,6 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import { useCommentContext } from "../../../contexts/commentContext";
-import { IComment } from "../../../types/commentsTypes";
+import {
+  IComment,
+  IComment_Reply,
+  IReply,
+  IUser,
+} from "../../../types/commentsTypes";
 import {
   CommentContent,
   CommentDetailsSection,
@@ -10,13 +15,24 @@ import {
 } from "./Comment.styled";
 
 type Props = {
-  comment: IComment;
+  comment: IComment_Reply;
   addReply: (commentId: string) => void;
   parentCommentId?: string | undefined;
 };
 
 const Comment = ({ comment, addReply, parentCommentId }: Props) => {
-  const { commentsData, deleteComment } = useCommentContext();
+  const { commentsData, deleteComment, updateComment } = useCommentContext();
+  const [edit, setEdit] = useState<boolean>(false);
+  const [commentContent, setCommentContent] = useState<string>(comment.content);
+
+  const handleEdit = (e: any) => {
+    setCommentContent(
+      e.target.value
+        .replace(`@${comment.replyingTo} `, "")
+        .replace(`@${comment.replyingTo}`, "")
+    );
+  };
+
   return (
     <Container>
       <CommentScoreSection>{comment.score}</CommentScoreSection>
@@ -25,7 +41,7 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
           {comment.user.username}
           {comment.user.username !== commentsData?.currentUser.username ? (
             <button onClick={() => addReply(comment.id)}>reply</button>
-          ) : (
+          ) : !edit ? (
             <div>
               <button
                 onClick={() => {
@@ -34,11 +50,37 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
               >
                 delete
               </button>
-              <button>edit</button>
+              <button onClick={() => setEdit(true)}>edit</button>
             </div>
-          )}
+          ) : null}
         </CommentHeader>
-        <CommentContent>{comment.content}</CommentContent>
+        {!edit ? (
+          <CommentContent>
+            {comment.replyingTo
+              ? `@${comment.replyingTo} ${comment.content}`
+              : comment.content}
+          </CommentContent>
+        ) : (
+          <>
+            <textarea
+              value={
+                comment.replyingTo
+                  ? `@${comment.replyingTo} ${commentContent}`
+                  : commentContent || ""
+              }
+              onChange={handleEdit}
+            />
+            <button
+              onClick={() => {
+                updateComment({ ...comment, content: commentContent });
+                setEdit(false);
+              }}
+            >
+              Update
+            </button>
+            <button onClick={() => setEdit(false)}>cancel</button>
+          </>
+        )}
       </CommentDetailsSection>
     </Container>
   );
