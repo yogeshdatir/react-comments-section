@@ -8,12 +8,15 @@ import { ReactComponent as ReplyIcon } from "../../../assets/images/icon-reply.s
 import { ReactComponent as DeleteIcon } from "../../../assets/images/icon-delete.svg";
 
 import {
+  CommentAction,
   CommentContent,
   CommentDetailsSection,
   CommentHeader,
+  CommentMobileAction,
   CommentScoreSection,
   Container,
   EditActionContainer,
+  ResponsiveContainer,
   TransparentButton,
   TransparentDangerButton,
   UserAvatar,
@@ -51,14 +54,38 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
 
   return (
     <Container>
-      <CommentScoreSection>
-        <PlusIcon onClick={() => handleAddScore(comment.id)} />
-        <p>{comment.score}</p>
-        <MinusIcon
-          style={{ height: "2.5px", width: "10px", fill: "red" }}
-          onClick={() => handleSubtractScore(comment.id)}
-        />
-      </CommentScoreSection>
+      <ResponsiveContainer>
+        <CommentScoreSection>
+          <PlusIcon onClick={() => handleAddScore(comment.id)} />
+          <p>{comment.score}</p>
+          <MinusIcon
+            style={{ height: "2.5px", width: "10px", fill: "red" }}
+            onClick={() => handleSubtractScore(comment.id)}
+          />
+        </CommentScoreSection>
+        <CommentMobileAction>
+          {comment.user.username !== commentsData?.currentUser.username ? (
+            <TransparentButton onClick={() => addReply(comment.id)}>
+              <ReplyIcon />
+              reply
+            </TransparentButton>
+          ) : !edit ? (
+            <div style={{ display: "flex" }}>
+              <TransparentDangerButton
+                onClick={() => {
+                  deleteComment(comment.id, parentCommentId);
+                }}
+              >
+                <DeleteIcon />
+                delete
+              </TransparentDangerButton>
+              <TransparentButton onClick={() => setEdit(true)}>
+                <EditIcon /> edit
+              </TransparentButton>
+            </div>
+          ) : null}
+        </CommentMobileAction>
+      </ResponsiveContainer>
       <CommentDetailsSection>
         <CommentHeader>
           <UserAvatar
@@ -70,7 +97,7 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
             <YouTag>you</YouTag>
           )}
           <span className="createdAt">{comment.createdAt}</span>
-          <div className="actions">
+          <CommentAction>
             {comment.user.username !== commentsData?.currentUser.username ? (
               <TransparentButton onClick={() => addReply(comment.id)}>
                 <ReplyIcon />
@@ -92,7 +119,7 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
                 </TransparentButton>
               </div>
             ) : null}
-          </div>
+          </CommentAction>
         </CommentHeader>
         {!edit ? (
           <CommentContent>

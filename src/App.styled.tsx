@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { CustomBreakpoints } from "./utils/themes/breakpoints";
 
 const MainContainer = styled.div`
   max-width: 720px;
@@ -12,6 +13,10 @@ const MainContainer = styled.div`
   }
   p {
     margin: 0;
+  }
+
+  ${CustomBreakpoints.mobile} {
+    padding: 32px 16px;
   }
 `;
 

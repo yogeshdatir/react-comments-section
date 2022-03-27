@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { CustomBreakpoints } from "../../../utils/themes/breakpoints";
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.palette.common.white};
@@ -6,6 +7,11 @@ const Container = styled.div`
   display: flex;
   margin-bottom: 20px;
   border-radius: 8px;
+
+  ${CustomBreakpoints.mobile} {
+    flex-direction: column-reverse;
+    padding: 16px;
+  }
 `;
 
 const CommentScoreSection = styled.div`
@@ -41,6 +47,12 @@ const CommentScoreSection = styled.div`
 
     color: ${(props) => props.theme.palette.primary.dark};
   }
+
+  ${CustomBreakpoints.mobile} {
+    flex-direction: row;
+    height: auto;
+    width: 100px;
+  }
 `;
 
 const CommentDetailsSection = styled.div`
@@ -48,11 +60,17 @@ const CommentDetailsSection = styled.div`
   flex-direction: column;
   padding-left: 24px;
   width: 100%;
+
+  ${CustomBreakpoints.mobile} {
+    padding-left: 0;
+    padding-bottom: 16px;
+  }
 `;
 
 const CommentHeader = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   padding-bottom: 18px;
 
   span.username {
@@ -67,10 +85,33 @@ const CommentHeader = styled.div`
   span.createdAt {
     margin-right: 16px;
     color: ${(props) => props.theme.palette.secondary.light};
-  }
 
-  .actions {
-    margin-left: auto;
+    ${CustomBreakpoints.mobile} {
+      margin-right: 0;
+    }
+  }
+`;
+
+const CommentAction = styled.div`
+  margin-left: auto;
+
+  ${CustomBreakpoints.mobile} {
+    display: none;
+  }
+`;
+
+const CommentMobileAction = styled.div`
+  margin-left: auto;
+
+  ${CustomBreakpoints.desktop} {
+    display: none;
+  }
+`;
+
+const ResponsiveContainer = styled.div`
+  ${CustomBreakpoints.mobile} {
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -122,6 +163,11 @@ const TransparentButton = styled.button`
 
 const TransparentDangerButton = styled(TransparentButton)`
   color: ${(props) => props.theme.palette.danger.dark};
+  padding-right: 24px;
+
+  ${CustomBreakpoints.mobile} {
+    padding-right: 10px;
+  }
 
   &:hover {
     color: ${(props) => props.theme.palette.danger.light};
@@ -155,6 +201,9 @@ export {
   CommentDetailsSection,
   CommentHeader,
   UserAvatar,
+  CommentAction,
+  ResponsiveContainer,
+  CommentMobileAction,
   CommentContent,
   TransparentButton,
   TransparentDangerButton,

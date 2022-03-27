@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { CustomBreakpoints } from "../../../utils/themes/breakpoints";
 
 const CommentFormContainer = styled.div`
   background: ${(props) => props.theme.palette.common.white};
@@ -9,11 +10,20 @@ const CommentFormContainer = styled.div`
   box-sizing: border-box;
   padding: 24px;
   border-radius: 8px;
+
+  ${CustomBreakpoints.mobile} {
+    flex-direction: column-reverse;
+    padding: 16px;
+  }
 `;
 
 const CommentContentContainer = styled.div`
   width: 100%;
   display: flex;
+
+  ${CustomBreakpoints.mobile} {
+    padding-bottom: 16px;
+  }
 `;
 
 const CommentTextArea = styled.textarea`
@@ -36,6 +46,7 @@ const CommentTextArea = styled.textarea`
 
   ::-webkit-scrollbar {
     border-radius: 8px;
+    width: 8px;
     cursor: pointer;
   }
 
@@ -45,10 +56,31 @@ const CommentTextArea = styled.textarea`
   }
 `;
 
+const ResponsiveContainer = styled.div`
+  ${CustomBreakpoints.mobile} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+`;
+
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  ${CustomBreakpoints.mobile} {
+    display: none;
+  }
+`;
+
+const MobileActionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  ${CustomBreakpoints.desktop} {
+    display: none;
+  }
 `;
 
 const PrimaryButton = styled.button`
@@ -76,4 +108,6 @@ export {
   CommentContentContainer,
   PrimaryButton,
   ActionContainer,
+  ResponsiveContainer,
+  MobileActionContainer,
 };

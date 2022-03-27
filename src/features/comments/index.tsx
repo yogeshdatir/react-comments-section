@@ -4,13 +4,7 @@ import {
   ReplyContainer,
   ReplyTimeline,
 } from "./Comments.styled";
-import {
-  IComment,
-  IUser,
-  IReply,
-  Response,
-  IComment_Reply,
-} from "../../types/commentsTypes";
+import { Response, IComment_Reply } from "../../types/commentsTypes";
 import Comment from "./components/Comment";
 import CommentForm from "./components/CommentForm";
 

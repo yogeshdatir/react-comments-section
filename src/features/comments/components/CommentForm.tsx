@@ -5,7 +5,9 @@ import {
   CommentContentContainer,
   CommentFormContainer,
   CommentTextArea,
+  MobileActionContainer,
   PrimaryButton,
+  ResponsiveContainer,
 } from "./CommentForm.styled";
 import { v4 as uuidv4 } from "uuid";
 import { useCommentContext } from "../../../contexts/commentContext";
@@ -62,10 +64,26 @@ const CommentForm = ({
 
   return (
     <CommentFormContainer>
-      <UserAvatar
-        src={require(`../../../assets${currentUser.image.png}`)}
-        alt="profile"
-      />
+      <ResponsiveContainer>
+        <UserAvatar
+          src={require(`../../../assets${currentUser.image.png}`)}
+          alt="profile"
+        />
+        <MobileActionContainer>
+          <PrimaryButton onClick={handleSubmit}>
+            {parentCommentId ? `reply` : `Send`}
+          </PrimaryButton>
+          {cancelReply && (
+            <PrimaryButton
+              onClick={() =>
+                parentCommentId !== undefined && cancelReply(parentCommentId)
+              }
+            >
+              cancel
+            </PrimaryButton>
+          )}
+        </MobileActionContainer>
+      </ResponsiveContainer>
       <CommentContentContainer>
         <CommentTextArea
           value={

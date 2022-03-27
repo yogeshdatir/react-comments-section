@@ -19,8 +19,7 @@ const defaultTheme: DefaultTheme = {
     fontWeightBold: "700px",
   },
   breakpoints: {
-    mobile: "375px",
-    desktop: "1440px",
+    mobile: "576px",
   },
 };
 export default defaultTheme;

@@ -30,7 +30,6 @@ export interface Body {
 
 export interface Breakpoints {
   mobile: string;
-  desktop: string;
 }
 
 export interface Theme extends DefaultTheme {
