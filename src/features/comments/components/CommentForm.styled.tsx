@@ -33,6 +33,16 @@ const CommentTextArea = styled.textarea`
   color: ${(props) => props.theme.palette.secondary.dark};
 
   outline: none;
+
+  ::-webkit-scrollbar {
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: ${(props) => props.theme.palette.primary.dark};
+  }
 `;
 
 const ActionContainer = styled.div`

@@ -54,14 +54,9 @@ const CommentHeader = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 18px;
-  img {
-    margin-right: 16px;
-    width: 32px;
-    height: 32px;
-  }
 
   span.username {
-    margin-right: 16px;
+    margin-right: 8px;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -85,7 +80,12 @@ const UserAvatar = styled.img`
   height: 32px;
 `;
 
-const CommentContent = styled.p``;
+const CommentContent = styled.p`
+  span {
+    font-weight: 600;
+    color: ${(props) => props.theme.palette.primary.dark};
+  }
+`;
 
 const EditActionContainer = styled.div`
   display: flex;
@@ -137,6 +137,18 @@ const TransparentDangerButton = styled(TransparentButton)`
   }
 `;
 
+const YouTag = styled.span`
+  margin-right: 16px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 15px;
+
+  color: ${(props) => props.theme.palette.common.white};
+  background: ${(props) => props.theme.palette.primary.dark};
+  border-radius: 2px;
+  padding: 1px 6px;
+`;
+
 export {
   Container,
   CommentScoreSection,
@@ -147,4 +159,5 @@ export {
   TransparentButton,
   TransparentDangerButton,
   EditActionContainer,
+  YouTag,
 };

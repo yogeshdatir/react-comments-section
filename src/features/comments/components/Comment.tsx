@@ -16,6 +16,8 @@ import {
   EditActionContainer,
   TransparentButton,
   TransparentDangerButton,
+  UserAvatar,
+  YouTag,
 } from "./Comment.styled";
 import { CommentTextArea, PrimaryButton } from "./CommentForm.styled";
 
@@ -59,11 +61,14 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
       </CommentScoreSection>
       <CommentDetailsSection>
         <CommentHeader>
-          <img
+          <UserAvatar
             src={require(`../../../assets${comment.user.image.png}`)}
             alt="profile"
           />
           <span className="username">{comment.user.username}</span>
+          {comment.user.username === commentsData?.currentUser.username && (
+            <YouTag>you</YouTag>
+          )}
           <span className="createdAt">{comment.createdAt}</span>
           <div className="actions">
             {comment.user.username !== commentsData?.currentUser.username ? (
@@ -91,9 +96,13 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
         </CommentHeader>
         {!edit ? (
           <CommentContent>
-            {comment.replyingTo
-              ? `@${comment.replyingTo} ${comment.content}`
-              : comment.content}
+            {comment.replyingTo ? (
+              <>
+                <span>@{comment.replyingTo}</span> {comment.content}
+              </>
+            ) : (
+              comment.content
+            )}
           </CommentContent>
         ) : (
           <>

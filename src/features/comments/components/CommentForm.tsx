@@ -74,6 +74,7 @@ const CommentForm = ({
               : newComment?.content || ""
           }
           onChange={handleChange}
+          autoFocus={true}
         />
         <ActionContainer>
           <PrimaryButton onClick={handleSubmit}>

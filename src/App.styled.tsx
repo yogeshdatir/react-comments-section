@@ -7,9 +7,11 @@ const MainContainer = styled.div`
   background: ${(props) => props.theme.palette.background};
   p,
   span {
-    margin: 0;
     font-size: ${(props) => props.theme.typography.body.fontSize};
     line-height: ${(props) => props.theme.typography.body.lineHeight};
+  }
+  p {
+    margin: 0;
   }
 `;
 
