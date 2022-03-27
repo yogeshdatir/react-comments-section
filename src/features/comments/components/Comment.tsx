@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useCommentContext } from "../../../contexts/commentContext";
 import { IComment_Reply } from "../../../types/commentsTypes";
-import PlusIcon from "../../../assets/images/icon-plus.svg";
-import MinusIcon from "../../../assets/images/icon-minus.svg";
+import { ReactComponent as PlusIcon } from "../../../assets/images/icon-plus.svg";
+import { ReactComponent as MinusIcon } from "../../../assets/images/icon-minus.svg";
+import { ReactComponent as EditIcon } from "../../../assets/images/icon-edit.svg";
+import { ReactComponent as ReplyIcon } from "../../../assets/images/icon-reply.svg";
+import { ReactComponent as DeleteIcon } from "../../../assets/images/icon-delete.svg";
 
 import {
   CommentContent,
@@ -10,7 +13,11 @@ import {
   CommentHeader,
   CommentScoreSection,
   Container,
+  EditActionContainer,
+  TransparentButton,
+  TransparentDangerButton,
 } from "./Comment.styled";
+import { CommentTextArea, PrimaryButton } from "./CommentForm.styled";
 
 type Props = {
   comment: IComment_Reply;
@@ -43,37 +50,44 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
   return (
     <Container>
       <CommentScoreSection>
-        <img
-          src={PlusIcon}
-          style={{ height: "10px", width: "10px" }}
-          alt="add score"
-          onClick={() => handleAddScore(comment.id)}
-        />
-        {comment.score}
-        <img
-          src={MinusIcon}
-          style={{ height: "2.5px", width: "10px" }}
-          alt="subtract score"
+        <PlusIcon onClick={() => handleAddScore(comment.id)} />
+        <p>{comment.score}</p>
+        <MinusIcon
+          style={{ height: "2.5px", width: "10px", fill: "red" }}
           onClick={() => handleSubtractScore(comment.id)}
         />
       </CommentScoreSection>
       <CommentDetailsSection>
         <CommentHeader>
-          {comment.user.username}
-          {comment.user.username !== commentsData?.currentUser.username ? (
-            <button onClick={() => addReply(comment.id)}>reply</button>
-          ) : !edit ? (
-            <div>
-              <button
-                onClick={() => {
-                  deleteComment(comment.id, parentCommentId);
-                }}
-              >
-                delete
-              </button>
-              <button onClick={() => setEdit(true)}>edit</button>
-            </div>
-          ) : null}
+          <img
+            src={require(`../../../assets${comment.user.image.png}`)}
+            alt="profile"
+          />
+          <span className="username">{comment.user.username}</span>
+          <span className="createdAt">{comment.createdAt}</span>
+          <div className="actions">
+            {comment.user.username !== commentsData?.currentUser.username ? (
+              <TransparentButton onClick={() => addReply(comment.id)}>
+                <ReplyIcon />
+                reply
+              </TransparentButton>
+            ) : !edit ? (
+              <div style={{ display: "flex" }}>
+                <TransparentDangerButton
+                  onClick={() => {
+                    deleteComment(comment.id, parentCommentId);
+                  }}
+                  style={{ paddingRight: "24px" }}
+                >
+                  <DeleteIcon />
+                  delete
+                </TransparentDangerButton>
+                <TransparentButton onClick={() => setEdit(true)}>
+                  <EditIcon /> edit
+                </TransparentButton>
+              </div>
+            ) : null}
+          </div>
         </CommentHeader>
         {!edit ? (
           <CommentContent>
@@ -83,7 +97,7 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
           </CommentContent>
         ) : (
           <>
-            <textarea
+            <CommentTextArea
               value={
                 comment.replyingTo
                   ? `@${comment.replyingTo} ${commentContent}`
@@ -91,15 +105,19 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
               }
               onChange={handleEdit}
             />
-            <button
-              onClick={() => {
-                updateComment({ ...comment, content: commentContent });
-                setEdit(false);
-              }}
-            >
-              Update
-            </button>
-            <button onClick={() => setEdit(false)}>cancel</button>
+            <EditActionContainer>
+              <PrimaryButton
+                onClick={() => {
+                  updateComment({ ...comment, content: commentContent });
+                  setEdit(false);
+                }}
+              >
+                Update
+              </PrimaryButton>
+              <PrimaryButton onClick={() => setEdit(false)}>
+                cancel
+              </PrimaryButton>
+            </EditActionContainer>
           </>
         )}
       </CommentDetailsSection>

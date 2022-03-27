@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import { IComment, IReply, IUser } from "../../../types/commentsTypes";
-import { CommentFormContainer } from "./CommentForm.styled";
+import { IComment, IUser } from "../../../types/commentsTypes";
+import {
+  ActionContainer,
+  CommentContentContainer,
+  CommentFormContainer,
+  CommentTextArea,
+  PrimaryButton,
+} from "./CommentForm.styled";
 import { v4 as uuidv4 } from "uuid";
 import { useCommentContext } from "../../../contexts/commentContext";
+import { UserAvatar } from "./Comment.styled";
 
 type Props = {
   parentCommentId?: string;
@@ -55,9 +62,12 @@ const CommentForm = ({
 
   return (
     <CommentFormContainer>
-      <p>{currentUser.username}</p>
-      <div>
-        <textarea
+      <UserAvatar
+        src={require(`../../../assets${currentUser.image.png}`)}
+        alt="profile"
+      />
+      <CommentContentContainer>
+        <CommentTextArea
           value={
             parentCommentId && !newComment
               ? `@${parentCommentUser} `
@@ -65,19 +75,21 @@ const CommentForm = ({
           }
           onChange={handleChange}
         />
-        <button onClick={handleSubmit}>
-          {parentCommentId ? `reply` : `Send`}
-        </button>
-        {cancelReply && (
-          <button
-            onClick={() =>
-              parentCommentId !== undefined && cancelReply(parentCommentId)
-            }
-          >
-            cancel
-          </button>
-        )}
-      </div>
+        <ActionContainer>
+          <PrimaryButton onClick={handleSubmit}>
+            {parentCommentId ? `reply` : `Send`}
+          </PrimaryButton>
+          {cancelReply && (
+            <PrimaryButton
+              onClick={() =>
+                parentCommentId !== undefined && cancelReply(parentCommentId)
+              }
+            >
+              cancel
+            </PrimaryButton>
+          )}
+        </ActionContainer>
+      </CommentContentContainer>
     </CommentFormContainer>
   );
 };
