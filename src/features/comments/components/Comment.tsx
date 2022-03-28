@@ -23,6 +23,7 @@ import {
   YouTag,
 } from "./Comment.styled";
 import { CommentTextArea, PrimaryButton } from "./CommentForm.styled";
+import DeleteCommentModal from "./DeleteCommentModal";
 
 type Props = {
   comment: IComment_Reply;
@@ -35,6 +36,7 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
     useCommentContext();
   const [edit, setEdit] = useState<boolean>(false);
   const [commentContent, setCommentContent] = useState<string>(comment.content);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleEdit = (e: any) => {
     setCommentContent(
@@ -53,51 +55,18 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
   };
 
   return (
-    <Container>
-      <ResponsiveContainer>
-        <CommentScoreSection>
-          <PlusIcon onClick={() => handleAddScore(comment.id)} />
-          <p>{comment.score}</p>
-          <MinusIcon
-            style={{ height: "2.5px", width: "10px", fill: "red" }}
-            onClick={() => handleSubtractScore(comment.id)}
-          />
-        </CommentScoreSection>
-        <CommentMobileAction>
-          {comment.user.username !== commentsData?.currentUser.username ? (
-            <TransparentButton onClick={() => addReply(comment.id)}>
-              <ReplyIcon />
-              reply
-            </TransparentButton>
-          ) : !edit ? (
-            <div style={{ display: "flex" }}>
-              <TransparentDangerButton
-                onClick={() => {
-                  deleteComment(comment.id, parentCommentId);
-                }}
-              >
-                <DeleteIcon />
-                delete
-              </TransparentDangerButton>
-              <TransparentButton onClick={() => setEdit(true)}>
-                <EditIcon /> edit
-              </TransparentButton>
-            </div>
-          ) : null}
-        </CommentMobileAction>
-      </ResponsiveContainer>
-      <CommentDetailsSection>
-        <CommentHeader>
-          <UserAvatar
-            src={require(`../../../assets${comment.user.image.png}`)}
-            alt="profile"
-          />
-          <span className="username">{comment.user.username}</span>
-          {comment.user.username === commentsData?.currentUser.username && (
-            <YouTag>you</YouTag>
-          )}
-          <span className="createdAt">{comment.createdAt}</span>
-          <CommentAction>
+    <>
+      <Container>
+        <ResponsiveContainer>
+          <CommentScoreSection>
+            <PlusIcon onClick={() => handleAddScore(comment.id)} />
+            <p>{comment.score}</p>
+            <MinusIcon
+              style={{ height: "2.5px", width: "10px", fill: "red" }}
+              onClick={() => handleSubtractScore(comment.id)}
+            />
+          </CommentScoreSection>
+          <CommentMobileAction>
             {comment.user.username !== commentsData?.currentUser.username ? (
               <TransparentButton onClick={() => addReply(comment.id)}>
                 <ReplyIcon />
@@ -107,9 +76,8 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
               <div style={{ display: "flex" }}>
                 <TransparentDangerButton
                   onClick={() => {
-                    deleteComment(comment.id, parentCommentId);
+                    setOpen(true);
                   }}
-                  style={{ paddingRight: "24px" }}
                 >
                   <DeleteIcon />
                   delete
@@ -119,45 +87,90 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
                 </TransparentButton>
               </div>
             ) : null}
-          </CommentAction>
-        </CommentHeader>
-        {!edit ? (
-          <CommentContent>
-            {comment.replyingTo ? (
-              <>
-                <span>@{comment.replyingTo}</span> {comment.content}
-              </>
-            ) : (
-              comment.content
-            )}
-          </CommentContent>
-        ) : (
-          <>
-            <CommentTextArea
-              value={
-                comment.replyingTo
-                  ? `@${comment.replyingTo} ${commentContent}`
-                  : commentContent || ""
-              }
-              onChange={handleEdit}
+          </CommentMobileAction>
+        </ResponsiveContainer>
+        <CommentDetailsSection>
+          <CommentHeader>
+            <UserAvatar
+              src={require(`../../../assets${comment.user.image.png}`)}
+              alt="profile"
             />
-            <EditActionContainer>
-              <PrimaryButton
-                onClick={() => {
-                  updateComment({ ...comment, content: commentContent });
-                  setEdit(false);
-                }}
-              >
-                Update
-              </PrimaryButton>
-              <PrimaryButton onClick={() => setEdit(false)}>
-                cancel
-              </PrimaryButton>
-            </EditActionContainer>
-          </>
-        )}
-      </CommentDetailsSection>
-    </Container>
+            <span className="username">{comment.user.username}</span>
+            {comment.user.username === commentsData?.currentUser.username && (
+              <YouTag>you</YouTag>
+            )}
+            <span className="createdAt">{comment.createdAt}</span>
+            <CommentAction>
+              {comment.user.username !== commentsData?.currentUser.username ? (
+                <TransparentButton onClick={() => addReply(comment.id)}>
+                  <ReplyIcon />
+                  reply
+                </TransparentButton>
+              ) : !edit ? (
+                <div style={{ display: "flex" }}>
+                  <TransparentDangerButton
+                    onClick={() => {
+                      setOpen(true);
+                    }}
+                    style={{ paddingRight: "24px" }}
+                  >
+                    <DeleteIcon />
+                    delete
+                  </TransparentDangerButton>
+                  <DeleteCommentModal
+                    open={open}
+                    setOpen={setOpen}
+                    data={{
+                      commentId: comment.id,
+                      parentCommentId: parentCommentId,
+                      deleteComment,
+                    }}
+                  />
+                  <TransparentButton onClick={() => setEdit(true)}>
+                    <EditIcon /> edit
+                  </TransparentButton>
+                </div>
+              ) : null}
+            </CommentAction>
+          </CommentHeader>
+          {!edit ? (
+            <CommentContent>
+              {comment.replyingTo ? (
+                <>
+                  <span>@{comment.replyingTo}</span> {comment.content}
+                </>
+              ) : (
+                comment.content
+              )}
+            </CommentContent>
+          ) : (
+            <>
+              <CommentTextArea
+                value={
+                  comment.replyingTo
+                    ? `@${comment.replyingTo} ${commentContent}`
+                    : commentContent || ""
+                }
+                onChange={handleEdit}
+              />
+              <EditActionContainer>
+                <PrimaryButton
+                  onClick={() => {
+                    updateComment({ ...comment, content: commentContent });
+                    setEdit(false);
+                  }}
+                >
+                  Update
+                </PrimaryButton>
+                <PrimaryButton onClick={() => setEdit(false)}>
+                  cancel
+                </PrimaryButton>
+              </EditActionContainer>
+            </>
+          )}
+        </CommentDetailsSection>
+      </Container>
+    </>
   );
 };
 
