@@ -1,5 +1,15 @@
 # Documentation
 
+Demo: [Deployed on Netlify](https://comments-fm.netlify.app/)
+
+Recursive nested comment threads with dynamic reply chains, upvoting, edit-in-place, and delete confirmation — complex parent-child state managed via Context API.
+
+Desktop
+![sc1](./src//assets//images/React-App-04-14-2026_08_59_AM.png)
+
+Mobile Responsiveness
+![sc2](./src/assets/images/React-App-04-14-2026_09_00_AM.png)
+
 ## Installations
 
 ### `yarn add @emotion/react @emotion/styled`
@@ -9,7 +19,6 @@
 ### `yarn add uuid`
 
 ### `yarn add --dev @types/uuid`
-
 
 ## Getting Started with Create React App
 
