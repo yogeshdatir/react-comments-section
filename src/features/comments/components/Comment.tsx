@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { useCommentContext } from "../../../contexts/commentContext";
-import { IComment_Reply } from "../../../types/commentsTypes";
-import { ReactComponent as PlusIcon } from "../../../assets/images/icon-plus.svg";
-import { ReactComponent as MinusIcon } from "../../../assets/images/icon-minus.svg";
-import { ReactComponent as EditIcon } from "../../../assets/images/icon-edit.svg";
-import { ReactComponent as ReplyIcon } from "../../../assets/images/icon-reply.svg";
-import { ReactComponent as DeleteIcon } from "../../../assets/images/icon-delete.svg";
+import { useState } from 'react';
+import { useCommentContext } from '../../../contexts/commentContext';
+import { IComment_Reply } from '../../../types/commentsTypes';
+import { ReactComponent as PlusIcon } from '../../../assets/images/icon-plus.svg';
+import { ReactComponent as MinusIcon } from '../../../assets/images/icon-minus.svg';
+import { ReactComponent as EditIcon } from '../../../assets/images/icon-edit.svg';
+import { ReactComponent as ReplyIcon } from '../../../assets/images/icon-reply.svg';
+import { ReactComponent as DeleteIcon } from '../../../assets/images/icon-delete.svg';
 
 import {
   CommentAction,
@@ -21,9 +21,9 @@ import {
   TransparentDangerButton,
   UserAvatar,
   YouTag,
-} from "./Comment.styled";
-import { CommentTextArea, PrimaryButton } from "./CommentForm.styled";
-import DeleteCommentModal from "./DeleteCommentModal";
+} from './Comment.styled';
+import { CommentTextArea, PrimaryButton } from './CommentForm.styled';
+import DeleteCommentModal from './DeleteCommentModal';
 
 type Props = {
   comment: IComment_Reply;
@@ -41,17 +41,17 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
   const handleEdit = (e: any) => {
     setCommentContent(
       e.target.value
-        .replace(`@${comment.replyingTo} `, "")
-        .replace(`@${comment.replyingTo}`, "")
+        .replace(`@${comment.replyingTo} `, '')
+        .replace(`@${comment.replyingTo}`, ''),
     );
   };
 
   const handleAddScore = (commentId: string) => {
-    updateScore(commentId, "add");
+    updateScore(commentId, 'add');
   };
 
   const handleSubtractScore = (commentId: string) => {
-    updateScore(commentId, "subtract");
+    updateScore(commentId, 'subtract');
   };
 
   return (
@@ -59,12 +59,13 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
       <Container>
         <ResponsiveContainer>
           <CommentScoreSection>
-            <PlusIcon onClick={() => handleAddScore(comment.id)} />
+            <span onClick={() => handleAddScore(comment.id)}>
+              <PlusIcon />
+            </span>
             <p>{comment.score}</p>
-            <MinusIcon
-              style={{ height: "2.5px", width: "10px", fill: "red" }}
-              onClick={() => handleSubtractScore(comment.id)}
-            />
+            <span onClick={() => handleSubtractScore(comment.id)}>
+              <MinusIcon />
+            </span>
           </CommentScoreSection>
           <CommentMobileAction>
             {comment.user.username !== commentsData?.currentUser.username ? (
@@ -73,7 +74,7 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
                 reply
               </TransparentButton>
             ) : !edit ? (
-              <div style={{ display: "flex" }}>
+              <div style={{ display: 'flex' }}>
                 <TransparentDangerButton
                   onClick={() => {
                     setOpen(true);
@@ -107,12 +108,12 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
                   reply
                 </TransparentButton>
               ) : !edit ? (
-                <div style={{ display: "flex" }}>
+                <div style={{ display: 'flex' }}>
                   <TransparentDangerButton
                     onClick={() => {
                       setOpen(true);
                     }}
-                    style={{ paddingRight: "24px" }}
+                    style={{ paddingRight: '24px' }}
                   >
                     <DeleteIcon />
                     delete
@@ -149,7 +150,7 @@ const Comment = ({ comment, addReply, parentCommentId }: Props) => {
                 value={
                   comment.replyingTo
                     ? `@${comment.replyingTo} ${commentContent}`
-                    : commentContent || ""
+                    : commentContent || ''
                 }
                 onChange={handleEdit}
               />

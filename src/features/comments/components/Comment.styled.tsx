@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import { CustomBreakpoints } from "../../../utils/themes/breakpoints";
+import styled from '@emotion/styled';
+import { CustomBreakpoints } from '../../../utils/themes/breakpoints';
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.palette.common.white};
@@ -20,23 +20,33 @@ const CommentScoreSection = styled.div`
   justify-content: space-around;
   align-items: center;
 
-  padding: 12px 5px;
-  min-width: 40px;
+  padding: 5px 0;
+  min-width: 50px;
   height: 100px;
   border-radius: 10px;
   background-color: ${(props) => props.theme.palette.gray.dark};
 
-  svg {
+  span {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
     cursor: pointer;
-    path {
-      fill: ${(props) => props.theme.palette.primary.light};
-      &:hover {
-        fill: ${(props) => props.theme.palette.primary.dark};
-      }
-    }
+    user-select: none;
   }
 
   p {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5px;
+    width: 100%;
+
+    cursor: pointer;
+
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -46,6 +56,19 @@ const CommentScoreSection = styled.div`
     /* Moderate Blue */
 
     color: ${(props) => props.theme.palette.primary.dark};
+  }
+
+  svg {
+    path {
+      fill: ${(props) => props.theme.palette.primary.light};
+    }
+  }
+
+  span:hover,
+  p:hover {
+    svg path {
+      fill: ${(props) => props.theme.palette.primary.dark};
+    }
   }
 
   ${CustomBreakpoints.mobile} {
